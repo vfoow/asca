@@ -1,4 +1,4 @@
--- // Hub de Trolls Brookhaven - Feito para Xeno Executor // --
+-- // Troll Hub Completo com Música Global // --
 
 -- Função rápida para criar botões
 function createButton(name, position, parent, callback)
@@ -25,7 +25,7 @@ local mainFrame = Instance.new("Frame")
 mainFrame.Parent = screenGui
 mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 mainFrame.Position = UDim2.new(0, 50, 0, 100)
-mainFrame.Size = UDim2.new(0, 250, 0, 300)
+mainFrame.Size = UDim2.new(0, 300, 0, 400)
 mainFrame.Active = true
 mainFrame.Draggable = true
 
@@ -40,7 +40,7 @@ title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.TextSize = 22
 
 -- // Botão 1: Crescer e virar neon
-createButton("Gigante Neon", UDim2.new(0, 25, 0, 60), mainFrame, function()
+createButton("Gigante Neon", UDim2.new(0, 50, 0, 60), mainFrame, function()
     local player = game.Players.LocalPlayer
     local char = player.Character or player.CharacterAdded:Wait()
 
@@ -59,7 +59,7 @@ createButton("Gigante Neon", UDim2.new(0, 25, 0, 60), mainFrame, function()
 end)
 
 -- // Botão 2: Super velocidade e pulo
-createButton("Super Speed & Jump", UDim2.new(0, 25, 0, 120), mainFrame, function()
+createButton("Super Speed & Jump", UDim2.new(0, 50, 0, 120), mainFrame, function()
     local player = game.Players.LocalPlayer
     local char = player.Character or player.CharacterAdded:Wait()
     local humanoid = char:WaitForChild("Humanoid")
@@ -75,7 +75,7 @@ createButton("Super Speed & Jump", UDim2.new(0, 25, 0, 120), mainFrame, function
 end)
 
 -- // Botão 3: Clones troll
-createButton("Spamar Clones", UDim2.new(0, 25, 0, 180), mainFrame, function()
+createButton("Spamar Clones", UDim2.new(0, 50, 0, 180), mainFrame, function()
     local player = game.Players.LocalPlayer
     local char = player.Character or player.CharacterAdded:Wait()
 
@@ -103,7 +103,7 @@ createButton("Spamar Clones", UDim2.new(0, 25, 0, 180), mainFrame, function()
 end)
 
 -- // Botão 4: Explosões troll
-createButton("Explosões Troll", UDim2.new(0, 25, 0, 240), mainFrame, function()
+createButton("Explosões Troll", UDim2.new(0, 50, 0, 240), mainFrame, function()
     local player = game.Players.LocalPlayer
     local char = player.Character or player.CharacterAdded:Wait()
 
@@ -125,4 +125,43 @@ createButton("Explosões Troll", UDim2.new(0, 25, 0, 240), mainFrame, function()
     })
 end)
 
-print("🔥 Troll Hub carregado com sucesso! 🔥")
+-- // Botão 5 + Caixa de Texto: Música Global
+-- Caixa de Texto para colocar o ID
+local musicIdBox = Instance.new("TextBox")
+musicIdBox.Parent = mainFrame
+musicIdBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+musicIdBox.Position = UDim2.new(0, 50, 0, 300)
+musicIdBox.Size = UDim2.new(0, 200, 0, 40)
+musicIdBox.Font = Enum.Font.Gotham
+musicIdBox.PlaceholderText = "Digite o ID da música"
+musicIdBox.Text = ""
+musicIdBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+musicIdBox.TextSize = 16
+
+-- Botão para tocar a música
+createButton("Tocar Música 🎵", UDim2.new(0, 50, 0, 350), mainFrame, function()
+    local musicId = tonumber(musicIdBox.Text)
+
+    if musicId then
+        -- Cria um Sound e toca globalmente
+        local sound = Instance.new("Sound", workspace)
+        sound.SoundId = "rbxassetid://"..musicId
+        sound.Looped = true
+        sound.Volume = 10 -- Volume alto pra geral ouvir
+        sound:Play()
+
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "Troll Hub",
+            Text = "Música tocando para o servidor! 🎶",
+            Duration = 3
+        })
+    else
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "Erro",
+            Text = "ID inválido! Digite um número válido.",
+            Duration = 3
+        })
+    end
+end)
+
+print("🔥 Troll Hub com Música Global carregado! 🔥")

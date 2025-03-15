@@ -1,45 +1,53 @@
--- // Troll Hub Completo com Música e Skybox Global ID Pronto! // --
+--[[  
+🔥 TROLL HUB BROOKHAVEN 🔥  
+💻 Feito por LUA Programming GOD  
+]]--
 
-function createButton(name, position, parent, callback)
+-- Proteção simples
+pcall(function() game.CoreGui.TrollHub:Destroy() end)
+
+-- Criar a interface principal
+local gui = Instance.new("ScreenGui")
+gui.Name = "TrollHub"
+gui.Parent = game.CoreGui
+
+local frame = Instance.new("Frame")
+frame.Parent = gui
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.Position = UDim2.new(0, 50, 0, 100)
+frame.Size = UDim2.new(0, 350, 0, 600)
+frame.Active = true
+frame.Draggable = true
+
+local title = Instance.new("TextLabel")
+title.Parent = frame
+title.Text = "🔥 TROLL HUB 🔥"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Size = UDim2.new(1, 0, 0, 50)
+title.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+title.Font = Enum.Font.GothamBlack
+title.TextSize = 24
+
+-- Função para criar botões
+function criarBotao(texto, posY, callback)
     local button = Instance.new("TextButton")
-    button.Name = name
-    button.Parent = parent
+    button.Parent = frame
+    button.Text = texto
+    button.Size = UDim2.new(0, 300, 0, 40)
+    button.Position = UDim2.new(0, 25, 0, posY)
     button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    button.Position = position
-    button.Size = UDim2.new(0, 200, 0, 50)
-    button.Font = Enum.Font.GothamBold
-    button.Text = name
     button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.Font = Enum.Font.Gotham
     button.TextSize = 18
     button.MouseButton1Click:Connect(callback)
 end
 
--- Criar ScreenGui
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = game.CoreGui
-screenGui.Name = "TrollHub"
+--------------------------------------------------
+-- BOTÕES E FUNÇÕES DA HUB
+--------------------------------------------------
 
--- Criar o Frame
-local mainFrame = Instance.new("Frame")
-mainFrame.Parent = screenGui
-mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-mainFrame.Position = UDim2.new(0, 50, 0, 100)
-mainFrame.Size = UDim2.new(0, 300, 0, 550)
-mainFrame.Active = true
-mainFrame.Draggable = true
-
--- Título
-local title = Instance.new("TextLabel")
-title.Parent = mainFrame
-title.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-title.Size = UDim2.new(1, 0, 0, 50)
-title.Font = Enum.Font.GothamBold
-title.Text = "🔥 Troll Hub 🔥"
-title.TextColor3 = Color3.fromRGB(255, 255, 255)
-title.TextSize = 22
-
--- // Botão 1: Crescer Neon
-createButton("Gigante Neon", UDim2.new(0, 50, 0, 60), mainFrame, function()
+-- Botão 1 - Virar Gigante Neon
+criarBotao("👾 Virar Gigante Neon", 60, function()
     local player = game.Players.LocalPlayer
     local char = player.Character or player.CharacterAdded:Wait()
 
@@ -50,20 +58,51 @@ createButton("Gigante Neon", UDim2.new(0, 50, 0, 60), mainFrame, function()
             part.BrickColor = BrickColor.new("Really red")
         end
     end
+
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Troll Hub",
+        Text = "Você virou um monstro gigante! 😈",
+        Duration = 4
+    })
 end)
 
--- // Botão 2: Super velocidade e pulo
-createButton("Super Speed & Jump", UDim2.new(0, 50, 0, 120), mainFrame, function()
-    local player = game.Players.LocalPlayer
-    local char = player.Character or player.CharacterAdded:Wait()
-    local humanoid = char:WaitForChild("Humanoid")
+-- Botão 2 - Super Speed & Jump
+criarBotao("⚡ Super Speed + Jump", 110, function()
+    local char = game.Players.LocalPlayer.Character
+    local humanoid = char:FindFirstChildOfClass("Humanoid")
 
-    humanoid.WalkSpeed = 100
+    humanoid.WalkSpeed = 150
     humanoid.JumpPower = 200
+
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Troll Hub",
+        Text = "Velocidade e pulo ativados! 🏃‍♂️",
+        Duration = 4
+    })
 end)
 
--- // Botão 3: Clones troll
-createButton("Spamar Clones", UDim2.new(0, 50, 0, 180), mainFrame, function()
+-- Botão 3 - Explosões infinitas
+criarBotao("💣 Explosões Troll", 160, function()
+    spawn(function()
+        while true do
+            local explosion = Instance.new("Explosion")
+            explosion.Position = game.Players.LocalPlayer.Character.PrimaryPart.Position + Vector3.new(0, 5, 0)
+            explosion.BlastRadius = 5
+            explosion.BlastPressure = 0
+            explosion.Parent = workspace
+            wait(1)
+        end
+    end)
+
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Troll Hub",
+        Text = "Explosões infinitas ativadas! 💥",
+        Duration = 4
+    })
+end)
+
+-- Botão 4 - Spamar Clones Pretos
+criarBotao("🧟‍♂️ Spamar Clones Pretos", 210, function()
     local player = game.Players.LocalPlayer
     local char = player.Character or player.CharacterAdded:Wait()
 
@@ -71,50 +110,41 @@ createButton("Spamar Clones", UDim2.new(0, 50, 0, 180), mainFrame, function()
         while true do
             local clone = char:Clone()
             clone.Parent = workspace
-            clone:MoveTo(char.PrimaryPart.Position + Vector3.new(math.random(-5,5), 0, math.random(-5,5)))
-            for _,v in pairs(clone:GetChildren()) do
+            clone:MoveTo(char.PrimaryPart.Position + Vector3.new(math.random(-5, 5), 0, math.random(-5, 5)))
+            
+            for _, v in pairs(clone:GetChildren()) do
                 if v:IsA("BasePart") then
                     v.BrickColor = BrickColor.new("Really black")
                     v.Material = Enum.Material.SmoothPlastic
                 end
             end
-            wait(5)
+
+            wait(3)
             clone:Destroy()
         end
     end)
+
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Troll Hub",
+        Text = "Clones pretos invadindo! 👻",
+        Duration = 4
+    })
 end)
 
--- // Botão 4: Explosões troll
-createButton("Explosões Troll", UDim2.new(0, 50, 0, 240), mainFrame, function()
-    local player = game.Players.LocalPlayer
-    local char = player.Character or player.CharacterAdded:Wait()
+-- Caixa de texto para ID de Música
+local musicBox = Instance.new("TextBox")
+musicBox.Parent = frame
+musicBox.PlaceholderText = "Digite o ID da Música 🎶"
+musicBox.Position = UDim2.new(0, 25, 0, 270)
+musicBox.Size = UDim2.new(0, 300, 0, 40)
+musicBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+musicBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+musicBox.Font = Enum.Font.Gotham
+musicBox.TextSize = 16
 
-    spawn(function()
-        while true do
-            local explosion = Instance.new("Explosion")
-            explosion.Position = char.PrimaryPart.Position
-            explosion.BlastRadius = 5
-            explosion.BlastPressure = 0
-            explosion.Parent = workspace
-            wait(2)
-        end
-    end)
-end)
-
--- // Botão 5 + Caixa de Texto: Música Global
-local musicIdBox = Instance.new("TextBox")
-musicIdBox.Parent = mainFrame
-musicIdBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-musicIdBox.Position = UDim2.new(0, 50, 0, 300)
-musicIdBox.Size = UDim2.new(0, 200, 0, 40)
-musicIdBox.Font = Enum.Font.Gotham
-musicIdBox.PlaceholderText = "Digite o ID da música"
-musicIdBox.Text = ""
-musicIdBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-musicIdBox.TextSize = 16
-
-createButton("Tocar Música 🎵", UDim2.new(0, 50, 0, 350), mainFrame, function()
-    local musicId = tonumber(musicIdBox.Text)
+-- Botão 5 - Tocar Música Global
+criarBotao("🎵 Tocar Música no Servidor", 320, function()
+    local musicId = tonumber(musicBox.Text)
 
     if musicId then
         local sound = Instance.new("Sound", workspace)
@@ -125,32 +155,32 @@ createButton("Tocar Música 🎵", UDim2.new(0, 50, 0, 350), mainFrame, function
 
         game.StarterGui:SetCore("SendNotification", {
             Title = "Troll Hub",
-            Text = "Música tocando para o servidor! 🎶",
-            Duration = 3
+            Text = "Tocando música para todos! 🎶",
+            Duration = 4
         })
     else
         game.StarterGui:SetCore("SendNotification", {
             Title = "Erro",
-            Text = "ID inválido! Digite um número válido.",
-            Duration = 3
+            Text = "Digite um ID de música válido!",
+            Duration = 4
         })
     end
 end)
 
--- // Botão 6: Mudar Skybox com ID fixo
-createButton("Mudar Skybox 🌌", UDim2.new(0, 50, 0, 410), mainFrame, function()
-    local assetId = 118489197285736 -- Seu ID fixo aqui!
+-- Botão 6 - Mudar Skybox Global
+criarBotao("🌌 Mudar Skybox para TODOS", 370, function()
+    local skyId = "118489197285736"
 
     local sky = Instance.new("Sky")
+    sky.SkyboxBk = "rbxassetid://"..skyId
+    sky.SkyboxDn = "rbxassetid://"..skyId
+    sky.SkyboxFt = "rbxassetid://"..skyId
+    sky.SkyboxLf = "rbxassetid://"..skyId
+    sky.SkyboxRt = "rbxassetid://"..skyId
+    sky.SkyboxUp = "rbxassetid://"..skyId
 
-    sky.SkyboxBk = "rbxassetid://"..assetId
-    sky.SkyboxDn = "rbxassetid://"..assetId
-    sky.SkyboxFt = "rbxassetid://"..assetId
-    sky.SkyboxLf = "rbxassetid://"..assetId
-    sky.SkyboxRt = "rbxassetid://"..assetId
-    sky.SkyboxUp = "rbxassetid://"..assetId
-
-    for _,v in pairs(game.Lighting:GetChildren()) do
+    -- Limpar outras skybox se tiver
+    for _, v in pairs(game.Lighting:GetChildren()) do
         if v:IsA("Sky") then
             v:Destroy()
         end
@@ -159,14 +189,18 @@ createButton("Mudar Skybox 🌌", UDim2.new(0, 50, 0, 410), mainFrame, function(
     sky.Parent = game.Lighting
 
     game.Lighting.Brightness = 0.2
-    game.Lighting.FogEnd = 1000
+    game.Lighting.FogEnd = 500
     game.Lighting.FogColor = Color3.fromRGB(0, 0, 0)
 
     game.StarterGui:SetCore("SendNotification", {
         Title = "Troll Hub",
-        Text = "Skybox mudada com sucesso para todos! 🌌",
-        Duration = 5
+        Text = "Skybox alterada com sucesso! 🌌",
+        Duration = 4
     })
 end)
 
-print("🔥 Troll Hub com Música + Skybox Global carregado! 🔥")
+--------------------------------------------------
+-- FIM DA HUB
+--------------------------------------------------
+
+print("🔥 TROLL HUB CARREGADA COM SUCESSO! 🔥")
